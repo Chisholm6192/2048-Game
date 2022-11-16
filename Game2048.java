@@ -12,35 +12,35 @@ public class Game2048 extends JPanel {
         start, won, running, over
     }
 
-    final Color[] colorTable = {
+    final Color[] colorTable = { //color assignment
             new Color(0x701710), new Color(0xFFE4C3), new Color(0xfff4d3),
             new Color(0xffdac3), new Color(0xe7b08e), new Color(0xe7bf8e),
             new Color(0xffc4c3), new Color(0xE7948e), new Color(0xbe7e56),
             new Color(0xbe5e56), new Color(0x9c3931), new Color(0x701710)};
 
-    final static int target = 2048;
+    final static int target = 2048; //target final score
 
     static int highest;
     static int score;
 
-    private Color gridColor = new Color(0xBBADA0);
+    private Color gridColor = new Color(0xBBADA0); //creation of color objects
     private Color emptyColor = new Color(0xCDC1B4);
     private Color startColor = new Color(0xFFEBCD);
 
     private Random rand = new Random();
 
-    private Tile[][] tiles;
+    private Tile[][] tiles; //2D array for tiles, *similar to my battleship game*
     private int side = 4;
     private State gamestate = State.start;
     private boolean checkingAvailableMoves;
 
-    public Game2048() {
+    public Game2048() { //main game function
         setPreferredSize(new Dimension(900, 700));
         setBackground(new Color(0xFAF8EF));
         setFont(new Font("SansSerif", Font.BOLD, 48));
         setFocusable(true);
 
-        addMouseListener(new MouseAdapter() {
+        addMouseListener(new MouseAdapter() { //mouse click to start the game
             @Override
             public void mousePressed(MouseEvent e) {
                 startGame();
@@ -48,20 +48,20 @@ public class Game2048 extends JPanel {
             }
         });
 
-        addKeyListener(new KeyAdapter() {
+        addKeyListener(new KeyAdapter() { //key pressed execution
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
-                    case KeyEvent.VK_UP:
+                    case KeyEvent.VK_UP: //up arrow
                         moveUp();
                         break;
-                    case KeyEvent.VK_DOWN:
+                    case KeyEvent.VK_DOWN: //down arrow
                         moveDown();
                         break;
-                    case KeyEvent.VK_LEFT:
+                    case KeyEvent.VK_LEFT: //left arrow
                         moveLeft();
                         break;
-                    case KeyEvent.VK_RIGHT:
+                    case KeyEvent.VK_RIGHT: //right arrow
                         moveRight();
                         break;
                 }
@@ -91,7 +91,7 @@ public class Game2048 extends JPanel {
         }
     }
 
-    void drawGrid(Graphics2D g) {
+    void drawGrid(Graphics2D g) { //grid creation
         g.setColor(gridColor);
         g.fillRoundRect(200, 100, 499, 499, 15, 15);
 
@@ -129,7 +129,7 @@ public class Game2048 extends JPanel {
         }
     }
 
-    void drawTile(Graphics2D g, int r, int c) {
+    void drawTile(Graphics2D g, int r, int c) { //drawing tiles
         int value = tiles[r][c].getValue();
 
         g.setColor(colorTable[(int) (Math.log(value) / Math.log(2)) + 1]);
@@ -149,7 +149,7 @@ public class Game2048 extends JPanel {
     }
 
 
-    private void addRandomTile() {
+    private void addRandomTile() { //adding random tile, either a 4 or 2
         int pos = rand.nextInt(side * side);
         int row, col;
         do {
@@ -184,7 +184,7 @@ public class Game2048 extends JPanel {
 
                 if (next == null) {
 
-                    if (checkingAvailableMoves)
+                    if (checkingAvailableMoves) //combining tiles together with addition
                         return true;
 
                     tiles[nextR][nextC] = curr;
@@ -225,7 +225,7 @@ public class Game2048 extends JPanel {
 
         return moved;
     }
-
+    //movement booleans
     boolean moveUp() {
         return move(0, -1, 0);
     }
@@ -269,7 +269,7 @@ public class Game2048 extends JPanel {
         });
     }
 
-    static class Tile {
+    static class Tile { //tile class
         private boolean merged;
         private int value;
 
